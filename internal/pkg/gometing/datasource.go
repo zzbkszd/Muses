@@ -1,5 +1,11 @@
 package gometing
 
+import (
+	"fmt"
+	"github.com/zzbkszd/Muses/internal/pkg/common"
+	"strconv"
+)
+
 type MusicSource interface {
 	// 根据关键字搜索音乐
 	Search(keyword string) []*RemoteMusicInfo
@@ -23,10 +29,29 @@ type MusicSource interface {
 type TencentMS struct {
 }
 
-func (TencentMS) SearchPageable(keyword string, page, limit int) {
+func (ms TencentMS) Search(keyword string) []*RemoteMusicInfo {
+	return ms.SearchPageable(keyword, 1, 10)
+}
+func (TencentMS) SearchPageable(keyword string, page, limit int) []*RemoteMusicInfo {
 	url := "https://c.y.qq.com/soso/fcgi-bin/client_search_cp"
 	params := map[string]string{
-		"format": "json",
+		"format":   "json",
+		"p":        strconv.Itoa(page),
+		"n":        strconv.Itoa(limit),
+		"w":        keyword,
+		"aggr":     "1",
+		"lossless": "1",
+		"cr":       "1",
+		"new_json": "1",
 	}
 
+	response, err := common.DoGet(url, params, LoadMockSession("tencent"))
+	if err != nil {
+		panic(err)
+		return nil
+	}
+
+	fmt.Println(response)
+
+	return nil
 }
