@@ -7,11 +7,13 @@ type RemoteMusicInfo struct {
 	ArtistId   string // 艺术家ID
 	Album      string // 专辑名称
 	AlbumId    string // 专辑ID
+	Picture    string // 专辑图片
 	SourceName string // 数据源名称
 }
 
 /**
 加载一个请求session，返回一个header列表
+因为这个需要经常维护，并可能切换为某数据源，所以就单独扔出来
 */
 func LoadMockSession(key string) map[string]string {
 	switch key {

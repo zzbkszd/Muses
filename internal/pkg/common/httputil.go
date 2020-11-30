@@ -3,6 +3,7 @@ package common
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -16,6 +17,7 @@ func CreateFormQuery(params map[string]string) string {
 
 func DoGet(url string, params map[string]string, headers map[string]string) (string, error) {
 	reqStr := CreateFormQuery(params)
+	log.Printf("do get full url: %s?%s\n", url, reqStr)
 	req, err := http.NewRequest(http.MethodGet, url+"?"+reqStr, nil)
 	if err != nil {
 		return "", err
